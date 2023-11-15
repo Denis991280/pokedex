@@ -75,6 +75,8 @@ export default function Pokedex() {
               color="primary"
               page={pageNumber}
               onChange={handlePageChange}
+              hideNextButton={true}
+              hidePrevButton={true}
             />
           </Stack>
           <button className="navBtn" onClick={handleNext}>
