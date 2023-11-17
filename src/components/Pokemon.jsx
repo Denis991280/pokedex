@@ -18,15 +18,24 @@ export default function Pokemon({ pokemon }) {
   }, []);
 
   const getData = async (url) => {
-    const response = await axios.get(url);
-    setPokemonDetail(response.data);
-    // console.log(response.data);
+    try {
+      const response = await axios.get(url);
+      setPokemonDetail(response.data);
+      // console.log(response.data);
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   const getPokemon = async (u) => {
-    const response = await axios.get(u);
-    setPokemons(response.data);
-    // console.log(response.data);
+    try {
+      const response = await axios.get(u);
+      setPokemons(response.data);
+      // console.log(response.data);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const bull = (
@@ -76,7 +85,7 @@ export default function Pokemon({ pokemon }) {
             </Typography>
           </CardContent>
           <CardActions>
-            <Link to={`/pokemon/${pokemon.name}`}>
+            <Link to={`/pokemon/${pokemons.id}`}>
               <Button size="small">View Details</Button>
             </Link>
           </CardActions>

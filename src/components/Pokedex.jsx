@@ -9,6 +9,7 @@ export default function Pokedex() {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageOffSet, setPageOffSet] = useState(0);
   const [buttonDisable, setButtonDisable] = useState(true);
+  const [buttonDisableNext, setButtonDisableNext] = useState(false);
 
   useEffect(() => {
     getData(`https://pokeapi.co/api/v2/pokemon?limit=24&offset=${pageOffSet}`);
@@ -18,6 +19,7 @@ export default function Pokedex() {
     try {
       const response = await axios.get(url);
       setPokemons(response.data.results);
+      // console.log(response.data.results);
     } catch (error) {
       console.log(error);
     }
@@ -29,6 +31,10 @@ export default function Pokedex() {
     if (pageOffSet === 0) {
       setButtonDisable(false);
     }
+
+    if(pageOffSet === 120) {
+      setButtonDisableNext(true)
+    }
   };
 
   const handlePrevious = () => {
@@ -36,6 +42,8 @@ export default function Pokedex() {
     setPageOffSet(pageOffSet - 24);
     if (pageOffSet === 24) {
       setButtonDisable(true);
+    } else if(pageOffSet < 168) {
+      setButtonDisableNext(false)
     }
   };
 
@@ -47,6 +55,12 @@ export default function Pokedex() {
       setButtonDisable(true);
     } else {
       setButtonDisable(false);
+    }
+
+    if(value === 7) {
+      setButtonDisableNext(true);
+    } else {
+      setButtonDisableNext(false);
     }
   };
 
@@ -69,9 +83,9 @@ export default function Pokedex() {
             Previous
           </button>
 
-          <Stack spacing={2}>
+          <Stack spacing={4}>
             <Pagination
-              count={20}
+              count={7}
               color="primary"
               page={pageNumber}
               onChange={handlePageChange}
@@ -79,7 +93,7 @@ export default function Pokedex() {
               hidePrevButton={true}
             />
           </Stack>
-          <button className="navBtn" onClick={handleNext}>
+          <button disabled={buttonDisableNext} className="navBtn" onClick={handleNext}>
             Next
           </button>
         </div>

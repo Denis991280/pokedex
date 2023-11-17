@@ -8,27 +8,37 @@ import { CardActionArea } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export default function PokemonInfo({}) {
-  const { namePokemon } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [pokemonDetail, setPokemonDetail] = useState();
   const [pokemons, setPokemons] = useState();
 
   useEffect(() => {
-    getData(`https://pokeapi.co/api/v2/pokemon-species/${namePokemon}`);
-    getPokemon(`https://pokeapi.co/api/v2/pokemon/${namePokemon}`);
+    getData(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+    getPokemon(`https://pokeapi.co/api/v2/pokemon/${id}`);
   }, []);
 
   const getData = async (url) => {
-    const response = await axios.get(url);
-    setPokemonDetail(response.data);
+    try {
+      const response = await axios.get(url);
+      setPokemonDetail(response.data);
     // console.log(response.data);
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   const getPokemon = async (u) => {
-    const response = await axios.get(u);
-    setPokemons(response.data);
+    try {
+      const response = await axios.get(u);
+      setPokemons(response.data);
     // console.log(response.data);
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   return (
@@ -52,10 +62,12 @@ export default function PokemonInfo({}) {
               <div>
                 {pokemonDetail.egg_groups.map((element) => {
                   return (
-                    <button className="classBtn">
+                    <div key={element.name}>
+                    <button  className="classBtn">
                       {element.name.charAt(0).toUpperCase() +
                         element.name.slice(1)}
                     </button>
+                    </div>
                   );
                 })}
                 <button className="classBtn">
@@ -80,8 +92,7 @@ export default function PokemonInfo({}) {
               >
                 <CardActionArea>
                   <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      <section className="bar-graph bar-graph-vertical bar-graph-two">
+                      <div className="bar-graph bar-graph-vertical bar-graph-two">
                         <div className="bar-one bar-container">
                           <div
                             className="bar"
@@ -149,11 +160,9 @@ export default function PokemonInfo({}) {
                               height: `${pokemons.stats[5].base_stat}%`,
                             }}
                           ></div>
-
                           <span className="year">SPD</span>
                         </div>
-                      </section>
-                    </Typography>
+                      </div>
                   </CardContent>
                 </CardActionArea>
               </Card>
